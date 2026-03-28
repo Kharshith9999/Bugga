@@ -1,0 +1,246 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;700;800&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+}
+
+body {
+  background-color: #1a1a2e;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-family: 'Inter', sans-serif;
+  overflow: hidden;
+}
+
+.app-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+}
+
+/* Main Canvas Frame */
+.game-container {
+  position: relative;
+  background-color: #70c5ce; /* Sky blue fallback */
+  border: none;
+  border-radius: 0;
+  overflow: hidden;
+  cursor: pointer;
+  width: 100vw;
+  height: 100vh;
+}
+
+/* Background image that user drops into /background.png */
+.background-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 100%;
+  background-image: url('/Background_image.jpeg');
+  background-size: auto 100%;
+  background-repeat: repeat-x;
+  z-index: 1;
+}
+.background-layer.moving {
+  animation: bg-scroll 8s linear infinite;
+}
+
+@keyframes bg-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+
+/* Bird Styling */
+.bird {
+  position: absolute;
+  background-color: #fca311; /* Fallback color if no image */
+  border-radius: 50%; /* Make fallback round */
+  z-index: 10;
+}
+
+/* Make image cover fallback if user defines one */
+.bird img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+
+/* Pipe Styling - Restored to original */
+.pipe {
+  position: absolute;
+  background-color: #2a9d8f; 
+  border: 4px solid #1c6e65;
+  z-index: 5;
+}
+
+.pipe-top {
+  border-bottom: 8px solid #1c6e65;
+}
+.pipe-top img {
+  transform: scaleY(-1);
+}
+
+.pipe-bottom {
+  border-top: 8px solid #1c6e65;
+}
+
+.pipe img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+/* Camera Flash effect when crashing */
+.flash-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: white;
+  z-index: 100;
+  pointer-events: none;
+  animation: flashFade 0.15s ease-out forwards;
+}
+
+@keyframes flashFade {
+  0% { opacity: 0.8; }
+  100% { opacity: 0; }
+}
+
+
+/* Minimalist HUD & Menus (The Fix you requested) */
+.ui-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding-top: 4rem;
+}
+
+/* Modern, clean score text instead of blocky 8-bit */
+.score-text {
+  font-family: 'Outfit', sans-serif;
+  font-size: 5rem;
+  font-weight: 800;
+  color: white;
+  text-shadow: 0px 4px 10px rgba(0,0,0,0.3);
+  margin-bottom: 2rem;
+  z-index: 50;
+  animation: bounceIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes bounceIn {
+  0% { transform: scale(0.5); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.menu-card {
+  pointer-events: auto;
+  background: white;
+  padding: 3rem 4rem;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.menu-card h2 {
+  font-family: 'Outfit', sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+  color: #1e293b;
+}
+
+.text-red {
+  color: #ef4444 !important;
+}
+
+/* Clean score board */
+.score-board {
+  margin: 1.5rem 0 2.5rem;
+}
+
+.score-board p {
+  margin: 0;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #64748b;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.score-board h3 {
+  font-size: 4rem;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 800;
+  color: #1e293b;
+  margin: 0;
+}
+
+.menu-card > p {
+  color: #64748b;
+  font-size: 1rem;
+  margin-bottom: 2rem;
+  font-weight: 500;
+}
+
+.menu-card button {
+  font-family: 'Inter', sans-serif;
+  background-color: #3b82f6;
+  border: none;
+  border-radius: 999px;
+  color: white;
+  padding: 1rem 2.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+  transition: all 0.2s ease;
+}
+
+.menu-card button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.5);
+  background-color: #2563eb;
+}
+
+.menu-card button:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 10px rgba(59, 130, 246, 0.4);
+}
+
+@keyframes popIn {
+  0% { transform: scale(0.8); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.anim-slide-down {
+  animation: slideDownFade 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards !important;
+}
+
+@keyframes slideDownFade {
+  0% { transform: translateY(-40px) scale(0.95); opacity: 0; }
+  100% { transform: translateY(0) scale(1); opacity: 1; }
+}
