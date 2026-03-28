@@ -255,6 +255,7 @@ function App() {
           }}
         >
           <img src={`${basePath}bird.png`} alt="bird" onError={(e) => e.target.style.display = 'none'} />
+          {gameState !== 'DYING' && <div className="wing"></div>}
         </div>
 
         {/* Camera Flash effect when dying */}
