@@ -10,6 +10,8 @@ const BIRD_WIDTH = 50;
 const BIRD_HEIGHT = 40;
 
 function App() {
+  const basePath = import.meta.env.BASE_URL;
+
   const [dimensions, setDimensions] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
@@ -29,7 +31,7 @@ function App() {
 
   useEffect(() => {
     // Look for user's sound
-    const audio = new Audio('/voice_when_lose.ogg');
+    const audio = new Audio(`${basePath}voice_when_lose.ogg`);
     audio.preload = 'auto'; // ensure it preloads
     loseSound.current = audio;
 
@@ -222,7 +224,7 @@ function App() {
                 height: pipe.topHeight,
               }}
             >
-              <img src="/image_on_pipe.jpeg" alt="pipe" onError={(e) => e.target.style.display = 'none'} />
+              <img src={`${basePath}image_on_pipe.jpeg`} alt="pipe" onError={(e) => e.target.style.display = 'none'} />
             </div>
 
             {/* Bottom Pipe */}
@@ -235,7 +237,7 @@ function App() {
                 height: dimensions.height - (pipe.topHeight + PIPE_GAP),
               }}
             >
-              <img src="/image_on_pipe.jpeg" alt="pipe" onError={(e) => e.target.style.display = 'none'} />
+              <img src={`${basePath}image_on_pipe.jpeg`} alt="pipe" onError={(e) => e.target.style.display = 'none'} />
             </div>
           </div>
         ))}
@@ -252,7 +254,7 @@ function App() {
             transition: gameState === 'DYING' ? 'transform 0.4s ease-in' : 'transform 0.05s ease-out'
           }}
         >
-          <img src="/bird.png" alt="bird" onError={(e) => e.target.style.display = 'none'} />
+          <img src={`${basePath}bird.png`} alt="bird" onError={(e) => e.target.style.display = 'none'} />
         </div>
 
         {/* Camera Flash effect when dying */}
