@@ -25,10 +25,13 @@ function App() {
   
   // Audio setup
   const loseSound = useRef(null);
+  const audioUnlocked = useRef(false);
 
   useEffect(() => {
     // Look for user's sound
-    loseSound.current = new Audio('/voice_when_lose.ogg');
+    const audio = new Audio('/voice_when_lose.ogg');
+    audio.preload = 'auto'; // ensure it preloads
+    loseSound.current = audio;
 
     // Handle full screen resizing dynamically
     const handleResize = () => {
@@ -41,9 +44,23 @@ function App() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // Browsers aggressively block audio unless explicitly unlocked by a direct user click
+  const unlockAudio = () => {
+    if (!audioUnlocked.current && loseSound.current) {
+      loseSound.current.play().then(() => {
+        loseSound.current.pause();
+        loseSound.current.currentTime = 0;
+        audioUnlocked.current = true;
+      }).catch(err => {
+        console.log('Audio unlock waiting for strict interaction', err);
+      });
+    }
+  };
+
   const triggerCrash = () => {
     if (loseSound.current) {
       loseSound.current.currentTime = 0;
+      // We force it to play fully
       loseSound.current.play().catch(e => console.log('Audio play failed: ', e));
     }
     // Visually flash the screen white
@@ -62,6 +79,9 @@ function App() {
   const jump = useCallback((e) => {
     if (e && e.preventDefault) e.preventDefault(); 
     
+    // Unlock audio on the very first jump/click
+    unlockAudio();
+
     if (gameState === 'PLAYING') {
       setBirdVelocity(JUMP_STRENGTH);
     } else if (gameState === 'START' || gameState === 'GAME_OVER') {
@@ -245,7 +265,7 @@ function App() {
           )}
 
           {gameState === 'START' && (
-            <div className="menu-card" onMouseDown={(e) => e.stopPropagation()} onTouchStart={(e) => e.stopPropagation()}>
+            <div className="menu-card" onMouseDown={(e) => { e.stopPropagation(); unlockAudio(); }} onTouchStart={(e) => { e.stopPropagation(); unlockAudio(); }}>
               <h2>Flappy Clone</h2>
               <p>Tap, Click, or press Space to jump</p>
               <button onMouseDown={jump} onTouchStart={jump}>Start Game</button>
