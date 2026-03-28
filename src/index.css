@@ -37,25 +37,18 @@ body {
   height: 100vh;
 }
 
-/* Background image that user drops into /background.png */
+/* Fixed full cover background */
 .background-layer {
   position: absolute;
   top: 0;
   left: 0;
-  width: 200%;
+  width: 100%;
   height: 100%;
   background-image: url('/Background_image.jpeg');
-  background-size: auto 100%;
-  background-repeat: repeat-x;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   z-index: 1;
-}
-.background-layer.moving {
-  animation: bg-scroll 8s linear infinite;
-}
-
-@keyframes bg-scroll {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
 }
 
 
@@ -73,6 +66,12 @@ body {
   height: 100%;
   object-fit: cover;
   border-radius: 50%;
+  animation: birdPulse 0.4s infinite alternate ease-in-out;
+}
+
+@keyframes birdPulse {
+  0% { transform: scale(0.95) translateY(2px); }
+  100% { transform: scale(1.05) translateY(-2px); }
 }
 
 
